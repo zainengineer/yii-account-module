@@ -74,8 +74,10 @@ class AccountChangePassword extends CFormModel
 
         /** @var AccountModule $account */
         $account = Yii::app()->getModule('account');
-        $this->user->{$account->passwordField} = CPasswordHelper::hashPassword($this->new_password);
-        return $this->user->save(false);
+        //to avoid indirect modification error message
+        $user = $this->user;
+        $user->{$account->passwordField} = CPasswordHelper::hashPassword($this->new_password);
+        return $user->save(false);
     }
 
     /**
@@ -103,4 +105,13 @@ class AccountChangePassword extends CFormModel
         return $this->_user;
     }
 
+    public function setUser($user)
+    {
+        $account = Yii::app()->getModule('account');
+        $userClass = $account->userClass;
+        if (!is_a($user, $userClass)) {
+            throw new Exception(sprintf('User of class %s is not an instance of %s', get_class($user), $userClass));
+        }
+        $this->user = $user;
+    }
 } 
