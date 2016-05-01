@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "cornernote/yii-email-module": "dev-master",
+        "zainengineer/yii-email-module": "*",
         "cornernote/yii-token-manager": "dev-master",
         "cornernote/yii-return-url": "dev-master",
         "crisu83/yiistrap": "dev-master",
