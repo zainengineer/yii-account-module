@@ -37,6 +37,8 @@ class AccountHybridAuthAction extends CAction
      */
     private $_returnUrl;
 
+    protected $_vWelcomeUrl;
+
     /**
      * @param null|string $action
      * @throws Exception
@@ -104,7 +106,7 @@ class AccountHybridAuthAction extends CAction
             if (!Yii::app()->user->isGuest) {
                 $identity->id = Yii::app()->user->id;
                 $accountHybridAuth->linkUser($identity);
-                $this->controller->redirect($this->returnUrl);
+                $this->controller->redirect($this->getWelcomeUrl());
             }
 
             // not logged in, but has existing account, link account and redirect
@@ -136,7 +138,7 @@ class AccountHybridAuthAction extends CAction
                                 call_user_func_array($account->emailCallbackActivate, array($accountHybridAuth->user)); // AccountEmailManager::sendAccountActivate($accountHybridAuth->user);
                             }
                         }
-                        $this->controller->redirect($this->returnUrl);
+                        $this->controller->redirect($this->getWelcomeUrl());
                     }
                 }
                 // no posted data, pre-fill form
@@ -201,6 +203,14 @@ class AccountHybridAuthAction extends CAction
     public function setReturnUrl($returnUrl)
     {
         $this->_returnUrl = $returnUrl;
+    }
+    public function getWelcomeUrl()
+    {
+        return $this->_vWelcomeUrl ? : $this->getReturnUrl();
+    }
+    public function setWelcomeUrl($vUrl)
+    {
+        $this->_vWelcomeUrl = $vUrl;
     }
 
 }
